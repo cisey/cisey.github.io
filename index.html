@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="tr"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Local Radar Rehberleri</title>
+<title>Cihan · Projeler</title>
 <style>
 :root{--bg:#f8f9fa;--card:#fff;--ink:#202124;--mut:#5f6368;--line:#dadce0;--primary:#1a73e8}
 @media (prefers-color-scheme:dark){:root{--bg:#202124;--card:#2d2e31;--ink:#e8eaed;--mut:#9aa0a6;--line:#3c4043;--primary:#8ab4f8}}
@@ -9,13 +9,41 @@
 body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.4}
 .wrap{max-width:640px;margin:0 auto;padding:28px 16px 48px}
 h1{font-size:28px;font-weight:800;margin:8px 0 4px;letter-spacing:-.02em}
-p{color:var(--mut);font-size:14px;margin:0 0 20px}
-a.k{display:block;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:10px;color:var(--ink);text-decoration:none;font-weight:600;font-size:17px}
+p.s{color:var(--mut);font-size:14px;margin:0 0 20px}
+a.k{display:block;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:10px;color:var(--ink);text-decoration:none;font-weight:600;font-size:17px;overflow-wrap:anywhere}
 a.k small{display:block;color:var(--mut);font-weight:400;font-size:13px;margin-top:2px}
-a.k:active{border-color:var(--primary)}
+a.k:hover,a.k:active{border-color:var(--primary)}
+.none{color:var(--mut);font-size:14px}
 </style></head><body><div class="wrap">
-<h1>📡 Local Radar</h1>
-<p>Bölge rehberleri. Birine dokun, açılsın.</p>
-<a class="k" href="local-radar-output/Akkent-Karatas.html">Akkent + Karataş<small>Şahinbey, Gaziantep</small></a>
-<a class="k" href="local-radar-output/Nizip.html">Nizip<small>Gaziantep</small></a>
-</div></body></html>
+<h1>🗂️ Projelerim</h1>
+<p class="s">Bir projeye dokun, açılsın.</p>
+<div id="list"><p class="none">Yükleniyor…</p></div>
+</div>
+<script>
+const KULLANICI='cisey';
+// API'ye ulaşılamazsa gösterilecek yedek liste
+const YEDEK=[{name:'local-radar-output',description:'Local Radar çıktıları'}];
+const list=document.getElementById('list');
+
+function ad(n){return n.replace(/[-_]+/g,' ').replace(/\b\p{L}/gu,c=>c.toLocaleUpperCase('tr'))}
+
+function ciz(repolar){
+  list.textContent='';
+  if(!repolar.length){list.innerHTML='<p class="none">Henüz yayınlanmış proje yok.</p>';return}
+  repolar.forEach(r=>{
+    const a=document.createElement('a');a.className='k';
+    a.href='/'+r.name+'/';
+    a.textContent=ad(r.name);
+    if(r.description){const s=document.createElement('small');s.textContent=r.description;a.appendChild(s)}
+    list.appendChild(a);
+  });
+}
+
+fetch('https://api.github.com/users/'+KULLANICI+'/repos?per_page=100&sort=updated')
+  .then(r=>{if(!r.ok)throw 0;return r.json()})
+  .then(d=>{
+    const p=d.filter(r=>r.has_pages&&!r.fork&&r.name.toLowerCase()!==KULLANICI+'.github.io');
+    ciz(p.length?p:YEDEK);
+  })
+  .catch(()=>ciz(YEDEK));
+</script></body></html>
