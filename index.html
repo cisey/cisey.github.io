@@ -132,10 +132,25 @@ p.desc { color: var(--text-muted); font-size: 14.5px; margin-top: 6px; line-heig
     const KULLANICI = 'cisey';
     // API'ye ulaşılamazsa gösterilecek yedek liste
     const YEDEK = [{ name: 'local-radar-output', description: 'Local Radar çıktıları' }];
+
+    // Üstte görünmesini istediğin projeler (küçük harfle, sırayla)
+    const SIRA = ['localradar'];
+
+    // Kısa açıklamalar (GitHub'daki uzun açıklamanın yerine bu gösterilir)
+    const ACIKLAMA = {
+      'localradar': 'İlçe ilçe yemek rehberleri',
+      'phrasalverbs': 'İngilizce phrasal verb rehberi'
+    };
+
     const list = document.getElementById('list');
 
     function ad(n) {
       return n.replace(/[-_]+/g, ' ').replace(/\b\p{L}/gu, c => c.toLocaleUpperCase('tr'));
+    }
+
+    function sira(r) {
+      const i = SIRA.indexOf(r.name.toLowerCase());
+      return i === -1 ? 999 : i;
     }
 
     function ciz(repolar) {
@@ -144,7 +159,9 @@ p.desc { color: var(--text-muted); font-size: 14.5px; margin-top: 6px; line-heig
         list.innerHTML = '<div class="state-msg">Henüz yayınlanmış proje yok.</div>';
         return;
       }
+      repolar = repolar.slice().sort((a, b) => sira(a) - sira(b));
       repolar.forEach(r => {
+        const aciklama = ACIKLAMA[r.name.toLowerCase()] || r.description || '';
         const a = document.createElement('a');
         a.className = 'card';
         a.href = '/' + r.name + '/';
@@ -154,7 +171,7 @@ p.desc { color: var(--text-muted); font-size: 14.5px; margin-top: 6px; line-heig
             <div class="card-title">${ad(r.name)}</div>
             <div class="card-meta">
               <span class="badge badge-all">Proje</span>
-              ${r.description ? `<span class="card-filename">${r.description}</span>` : ''}
+              ${aciklama ? `<span class="card-filename">${aciklama}</span>` : ''}
             </div>
           </div>
           <div class="card-arrow">→</div>
