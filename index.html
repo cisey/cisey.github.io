@@ -11,7 +11,7 @@
 </script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Cihan · Projeler</title>
+<title>Projeler</title>
 
 <!-- Sayfa açılırken tema yanıp sönmesini önler -->
 <script>
@@ -28,13 +28,13 @@
 
 <style>
 :root {
-  --bg: #faf8f5;
-  --surface-hover: #f2eee7;
-  --icon-bg: #f0ebe2;
-  --border: #e6e0d6;
-  --text-main: #1c1917;
-  --text-muted: #78716c;
-  --text-faint: #a8a29e;
+  --bg: #efe9de;
+  --surface-hover: #e5ddd0;
+  --icon-bg: #e3dacb;
+  --border: #d9cfc0;
+  --text-main: #292524;
+  --text-muted: #6b635b;
+  --text-faint: #968c82;
   --accent: #b45309;
 }
 
@@ -189,20 +189,8 @@ p.desc {
   text-overflow: ellipsis;
 }
 
-.item-right {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.item-date {
-  font-size: 12px;
-  color: var(--text-faint);
-  font-variant-numeric: tabular-nums;
-}
-
 .item-arrow {
+  flex-shrink: 0;
   color: var(--text-faint);
   font-size: 16px;
   transition: transform 0.2s ease, color 0.2s ease;
@@ -227,9 +215,8 @@ p.desc {
   padding-top: 48px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   font-size: 13px;
-  color: var(--text-faint);
 }
 
 .footer a {
@@ -256,7 +243,6 @@ p.desc {
   .container { padding: 40px 20px 36px; }
   .header { margin-bottom: 28px; }
   .item { padding: 16px 8px; margin: 0 -8px; gap: 12px; }
-  .item-date { display: none; }
 }
 </style>
 </head>
@@ -278,7 +264,6 @@ p.desc {
     </main>
 
     <footer class="footer">
-      <span>Cihan</span>
       <a href="https://github.com/cisey" target="_blank" rel="noopener noreferrer">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.05 11.05 0 0 1 5.79 0c2.21-1.49 3.18-1.18 3.18-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.69 5.39-5.26 5.68.41.36.78 1.06.78 2.14 0 1.55-.01 2.79-.01 3.17 0 .31.21.68.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></svg>
         github.com/cisey
@@ -320,7 +305,6 @@ p.desc {
     const VARSAYILAN_IKON = '✦';
 
     const list = document.getElementById('list');
-    const tarihFormat = new Intl.DateTimeFormat('tr-TR', { month: 'short', year: 'numeric' });
 
     function ad(n) {
       return n.replace(/[-_]+/g, ' ').replace(/\b\p{L}/gu, c => c.toLocaleUpperCase('tr'));
@@ -329,13 +313,6 @@ p.desc {
     function sira(r) {
       const i = SIRA.indexOf(r.name.toLowerCase());
       return i === -1 ? 999 : i;
-    }
-
-    function tarih(r) {
-      const t = r.pushed_at || r.updated_at;
-      if (!t) return '';
-      const d = new Date(t);
-      return isNaN(d) ? '' : tarihFormat.format(d);
     }
 
     function ciz(repolar) {
@@ -349,7 +326,6 @@ p.desc {
         const key = r.name.toLowerCase();
         const aciklama = ACIKLAMA[key] || r.description || '';
         const ikon = IKON[key] || VARSAYILAN_IKON;
-        const guncelleme = tarih(r);
 
         const a = document.createElement('a');
         a.className = 'item';
@@ -360,10 +336,7 @@ p.desc {
             <div class="item-title">${ad(r.name)}</div>
             ${aciklama ? `<div class="item-desc">${aciklama}</div>` : ''}
           </div>
-          <div class="item-right">
-            ${guncelleme ? `<span class="item-date">${guncelleme}</span>` : ''}
-            <span class="item-arrow">→</span>
-          </div>
+          <span class="item-arrow">→</span>
         `;
         list.appendChild(a);
       });
