@@ -289,18 +289,25 @@ p.desc {
     const YEDEK = [{ name: 'local-radar-output', description: 'Local Radar çıktıları' }];
 
     // Üstte görünmesini istediğin projeler (küçük harfle, sırayla)
-    const SIRA = ['localradar', 'phrasalverbs'];
+    const SIRA = ['localradar', 'phrasalverbs', 'akaryakit-istasyonlari'];
 
     // Kısa açıklamalar
     const ACIKLAMA = {
       'localradar': 'İlçe ilçe yemek rehberleri',
-      'phrasalverbs': 'İngilizce phrasal verb rehberi'
+      'phrasalverbs': 'İngilizce phrasal verb rehberi',
+      'akaryakit-istasyonlari': 'Yol üstü akaryakıt ve şarj rehberi'
+    };
+
+    // Repo adından farklı görünmesini istediğin adlar (Türkçe karakter, boşluk vb.)
+    const ADLAR = {
+      'akaryakit-istasyonlari': 'Yakıt &amp; Şarj Radarı'
     };
 
     // Projeye özel ikonlar (listede olmayanlara varsayılan ikon atanır)
     const IKON = {
       'localradar': '📍',
-      'phrasalverbs': '📖'
+      'phrasalverbs': '📖',
+      'akaryakit-istasyonlari': '⛽'
     };
     const VARSAYILAN_IKON = '✦';
 
@@ -333,7 +340,7 @@ p.desc {
         a.innerHTML = `
           <div class="item-icon">${ikon}</div>
           <div class="item-body">
-            <div class="item-title">${ad(r.name)}</div>
+            <div class="item-title">${ADLAR[key] || ad(r.name)}</div>
             ${aciklama ? `<div class="item-desc">${aciklama}</div>` : ''}
           </div>
           <span class="item-arrow">→</span>
